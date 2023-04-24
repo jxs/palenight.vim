@@ -26,29 +26,12 @@ if !exists("g:palenight_termcolors")
   let g:palenight_termcolors = 256
 endif
 
-" Not all terminals support italics properly. If yours does, opt-in.
-if !exists("g:palenight_terminal_italics")
-  let g:palenight_terminal_italics = 0
-endif
-
 " This function is based on one from FlatColor: https://github.com/MaxSt/FlatColor/
 " Which in turn was based on one found in hemisu: https://github.com/noahfrederick/vim-hemisu/
 function! s:h(group, style)
-  if g:palenight_terminal_italics == 0
-    if has_key(a:style, "cterm") && a:style["cterm"] == "italic"
-      unlet a:style.cterm
-    endif
-    if has_key(a:style, "gui") && a:style["gui"] == "italic"
-      unlet a:style.gui
-    endif
-  endif
-  if g:palenight_termcolors == 16
-    let l:ctermfg = (has_key(a:style, "fg") ? a:style.fg.cterm16 : "NONE")
-    let l:ctermbg = (has_key(a:style, "bg") ? a:style.bg.cterm16 : "NONE")
-  else
-    let l:ctermfg = (has_key(a:style, "fg") ? a:style.fg.cterm : "NONE")
-    let l:ctermbg = (has_key(a:style, "bg") ? a:style.bg.cterm : "NONE")
-  endif
+  let l:ctermfg = (has_key(a:style, "fg") ? a:style.fg.cterm : "NONE")
+  let l:ctermbg = (has_key(a:style, "bg") ? a:style.bg.cterm : "NONE")
+
   execute "highlight" a:group
     \ "guifg="   (has_key(a:style, "fg")    ? a:style.fg.gui   : "NONE")
     \ "guibg="   (has_key(a:style, "bg")    ? a:style.bg.gui   : "NONE")
@@ -572,6 +555,21 @@ call s:h("@type.builtin", { "fg": s:dark_yellow })
 call s:h("@type.qualifier", { "fg": s:yellow })
 call s:h("@variable", { "fg": s:white })
 call s:h("@variable.builtin", { "fg": s:dark_yellow })
+
+" Diagnostics
+
+call s:h("DiagnosticError", { "fg": s:red })
+call s:h("DiagnosticSignError", { "fg": s:red })
+call s:h("DiagnosticUnderlineError", { "gui": "undercurl", "sp": s:red })
+call s:h("DiagnosticWarn", { "fg": s:yellow })
+call s:h("DiagnosticSignWarn", { "fg": s:yellow })
+call s:h("DiagnosticUnderlineWarn", { "gui": "undercurl", "sp": s:yellow })
+call s:h("DiagnosticInfo", { "fg": s:blue })
+call s:h("DiagnosticSignInfo", { "fg": s:blue })
+call s:h("DiagnosticUnderlineInfo", { "gui": "undercurl", "sp": s:blue })
+call s:h("DiagnosticHint", { "fg": s:green })
+call s:h("DiagnosticSignHint", { "fg": s:green })
+call s:h("DiagnosticUnderlineHint", { "gui": "undercurl", "sp": s:green })
 
 " }}}
 
